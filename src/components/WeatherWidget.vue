@@ -93,7 +93,7 @@ async function searchWeather(city) {
 
         <!-- Display loading, error, or weather data -->
         <p v-if="loading">
-            Loading weather...
+            Loading weather widget...
         </p>
 
         <p v-else-if="error">
