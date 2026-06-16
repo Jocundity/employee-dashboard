@@ -3,9 +3,9 @@ import DashboardHeader from '../components/DashboardHeader.vue'
 import ClockWidget from '../components/ClockWidget.vue'
 import WeatherWidget from '../components/WeatherWidget.vue'
 import CurrencyWidget from '../components/CurrencyWidget.vue'
-import WidgetCard from '../components/WidgetCard.vue'
-
+import NewsWidget from '../components/NewsWidget.vue'
 import TaskWidget from '../components/TaskWidget.vue'
+
 </script>
 
 <template>
@@ -19,7 +19,11 @@ import TaskWidget from '../components/TaskWidget.vue'
                 <WeatherWidget />
 
                 <CurrencyWidget />
+                <NewsWidget />
+
                 <TaskWidget />
+
+                
                 
             </div>
         </main>
