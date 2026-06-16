@@ -5,6 +5,7 @@ import WeatherWidget from '../components/WeatherWidget.vue'
 import CurrencyWidget from '../components/CurrencyWidget.vue'
 import NewsWidget from '../components/NewsWidget.vue'
 import TaskWidget from '../components/TaskWidget.vue'
+import ChatBotWidget from '../components/ChatBotWidget.vue'
 
 </script>
 
@@ -22,6 +23,7 @@ import TaskWidget from '../components/TaskWidget.vue'
                 <NewsWidget />
 
                 <TaskWidget />
+                <ChatBotWidget />
 
                 
                 
