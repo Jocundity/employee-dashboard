@@ -10,7 +10,7 @@ onMounted(() => {
         currentTime.value = now.toLocaleTimeString()
     }, 1000)
 
-    const date = new Date().toLocaleDateString();
+    const date = new Date().toLocaleDateString('en-GB', {weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric'});
     currentDate.value = date;
 
 });

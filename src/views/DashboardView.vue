@@ -1,6 +1,7 @@
 <script setup>
 import DashboardHeader from '../components/DashboardHeader.vue'
 import ClockWidget from '../components/ClockWidget.vue'
+import WeatherWidget from '../components/WeatherWidget.vue'
 import WidgetCard from '../components/WidgetCard.vue'
 import CounterWidget from '../components/CounterWidget.vue'
 import TaskWidget from '../components/TaskWidget.vue'
@@ -15,9 +16,7 @@ import TaskWidget from '../components/TaskWidget.vue'
             <div class="widget-grid">
                 <ClockWidget />
 
-                <WidgetCard title="Weather">
-                    <p>Loading weather...</p>
-                </WidgetCard>
+                <WeatherWidget />
 
                 <WidgetCard title="Currency">
                     <p>Loading exchange rates...</p>
