@@ -73,9 +73,10 @@ async function sendMessage() {
 
 <style scoped>
 .widget {
-  border: 1px solid #ccc;
+  border: 5px solid #fcd34d;
   padding: 1rem;
   border-radius: 8px;
+  background: #fff;
 }
 
 .chatbot-messages {
@@ -88,7 +89,7 @@ async function sendMessage() {
 .message {
   padding: 0.75rem;
   border-radius: 8px;
-  background-color: #f9f9f9;
+  background-color: #fffbeb;
 }
 
 .message.user {

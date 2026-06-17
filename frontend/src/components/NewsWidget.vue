@@ -6,7 +6,7 @@ const articles = ref([])
 const searchTerm = ref('')
 
 const currentPage = ref(1)
-const articlesPerPage = ref(5)
+const articlesPerPage = ref(2)
 
 const displayedArticles = computed(() => {
   const startIndex = (currentPage.value - 1) * articlesPerPage.value
@@ -97,9 +97,10 @@ function formatDate(dateString) {
 
 <style scoped>
 .widget {
-  border: 1px solid #ccc;
+  border: 5px solid #fcd34d;
   padding: 1rem;
   border-radius: 8px;
+  background: #fff;
 }
 
 ul {
@@ -109,8 +110,18 @@ ul {
 li {
   margin-bottom: 1rem;
   padding: 0.5rem;
-  background-color: #f9f9f9;
+  background-color: #fffbeb;
   border-radius: 4px;
+}
+
+a {
+  color: #334155;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+a:hover {
+  color: #020617;
 }
 
 .article-header {
@@ -123,7 +134,7 @@ li {
   display: flex;
   gap: 1rem;
   font-size: 0.9rem;
-  color: #555;
+  color: #334155;
 }
 
 img {

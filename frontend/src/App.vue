@@ -8,6 +8,11 @@ import AppNavBar from './components/AppNavBar.vue'
   <RouterView />
 </template>
 
-<style scoped>
-
+<style>
+body {
+  background: #f1f5f9;
+  color: #334155;
+  font-family: Helvetica, Arial, sans-serif;
+  margin: 0;
+}
 </style>
