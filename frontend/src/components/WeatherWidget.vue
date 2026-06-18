@@ -59,6 +59,21 @@ async function searchWeather(city) {
     citiesFound.value = []
   }
 }
+
+function getWeatherIcon(code) {
+  // Map weather codes to emojis
+  if (code === 0) return '☀️' // Clear sky
+  if (code >= 1 && code <= 3) return '🌤️' // Mainly clear, partly cloudy, and overcast
+  if (code >= 45 && code <= 48) return '🌫️' // Fog
+  if (code >= 51 && code <= 55) return '🌦️' // Drizzle
+  if (code >= 61 && code <= 65) return '🌧️' // Rain
+  if (code >= 71 && code <= 77) return '❄️' // Snow fall
+  if (code >= 80 && code <= 82) return '🌦️' // Rain showers
+  if (code >= 85 && code <= 86) return '🌨️' // Snow showers
+  if (code == 95 || code >= 96) return '⛈️' // Thunderstorm
+
+  return ''
+}
 </script>
 
 <template>
@@ -73,7 +88,7 @@ async function searchWeather(city) {
     <div v-if="citiesFound.length > 0">
       <h4>Choose your city:</h4>
       <ul>
-        <li v-for="city in citiesFound" :key="city.id">
+        <li v-for="city in citiesFound" :key="city.id" class="cities">
           {{ city.name }}, {{ city.country }}, {{ city.admin1 }}
           <span v-if="city.admin2"> {{ city.admin2 }}</span>
           <button @click="searchWeather(city)">Select</button>
@@ -90,6 +105,7 @@ async function searchWeather(city) {
 
     <div v-else>
       <h2>{{ selectedCity }}</h2>
+      <div class="current-icon">{{ getWeatherIcon(weather.current.weatherCode) }}</div>
       <h2>Temperature: {{ weather.current.temperature }}°C</h2>
       <h2>Wind Speed: {{ weather.current.windSpeed }} km/h</h2>
       <h2>Precipitation: {{ weather.current.precipitation }} mm</h2>
@@ -98,8 +114,8 @@ async function searchWeather(city) {
 
       <ul>
         <li v-for="day in weather.forecast" :key="day.date">
-          {{ day.date }}
-
+          <span class="forecast-icon">{{ getWeatherIcon(day.weatherCode) }}</span>
+          <span>{{ day.date }}</span>
           <span>High/Low: {{ day.maxTemp }}° / {{ day.minTemp }}°</span>
           <span>Precipitation: {{ day.precipitation }} mm</span>
         </li>
@@ -161,6 +177,8 @@ ul {
   flex-direction: column;
   gap: 0.5rem;
   list-style-type: none;
+  margin: 0;
+  padding: 0;
 }
 
 li {
@@ -174,5 +192,20 @@ li {
 
 h2 {
   text-align: center;
+}
+
+.cities {
+  border: none;
+  background: #fffbeb;
+}
+
+.current-icon {
+  font-size: 4rem;
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.forecast-icon {
+  font-size: 1.5rem;
 }
 </style>
