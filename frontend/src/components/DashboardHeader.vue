@@ -1,12 +1,18 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 
-const name = ref('')
-name.value = 'Jocelyn'
+const user = ref(null)
+
+onMounted(() => {
+  const userData = localStorage.getItem('user')
+  if (userData) {
+    user.value = JSON.parse(userData)
+  }
+})
 </script>
 
 <template>
   <header>
-    <h1>Hello, {{ name }}!</h1>
+    <h1 v-if="user">Hello, {{ user.name }}!</h1>
   </header>
 </template>

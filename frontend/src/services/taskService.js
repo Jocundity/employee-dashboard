@@ -1,7 +1,15 @@
 const TASKS_API_URL = 'http://localhost:3000/api/tasks'
 
 export async function getTasks() {
-  const response = await fetch(TASKS_API_URL)
+  const token = localStorage.getItem('token')
+
+  const response = await fetch(TASKS_API_URL, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  })
 
   if (!response.ok) {
     const errorData = await response.json()
@@ -14,10 +22,13 @@ export async function getTasks() {
 }
 
 export async function createTask(task) {
+  const token = localStorage.getItem('token')
+
   const response = await fetch(TASKS_API_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(task),
   })
@@ -33,8 +44,14 @@ export async function createTask(task) {
 }
 
 export async function deleteTask(taskId) {
+  const token = localStorage.getItem('token')
+
   const response = await fetch(`${TASKS_API_URL}/${taskId}`, {
     method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
   })
 
   if (!response.ok) {
@@ -44,10 +61,13 @@ export async function deleteTask(taskId) {
 }
 
 export async function updateTask(taskId, completed) {
+  const token = localStorage.getItem('token')
+
   const response = await fetch(`${TASKS_API_URL}/${taskId}/completed`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({ completed }),
   })
@@ -63,10 +83,13 @@ export async function updateTask(taskId, completed) {
 }
 
 export async function editTask(task) {
+  const token = localStorage.getItem('token')
+
   const response = await fetch(`${TASKS_API_URL}/${task.id}`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
       title: task.title,

@@ -1,28 +1,36 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { loginUser } from '../services/authService'
+import { registerUser } from '../services/authService'
 
 const router = useRouter()
 
 const error = ref('')
 const loading = ref(false)
 
+const name = ref('')
 const email = ref('')
 const password = ref('')
 
-async function loginUserHandler() {
+async function registerUserHandler() {
   error.value = ''
   loading.value = true
 
-  if (!email.value || !password.value) {
-    error.value = 'Please enter your email and password.'
+  if (!name.value || !email.value || !password.value) {
+    error.value = 'Please enter your name, email, and password.'
+    loading.value = false
+    return
+  }
+
+  if (password.value.length < 8) {
+    error.value = 'Password must be at least 8 characters long.'
     loading.value = false
     return
   }
 
   try {
-    const authData = await loginUser({
+    const authData = await registerUser({
+      name: name.value,
       email: email.value,
       password: password.value,
     })
@@ -45,24 +53,22 @@ async function loginUserHandler() {
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=account_box"
   />
 
-  <div class="login-container">
-    <div class="login">
+  <div class="register-container">
+    <div class="register">
       <h1>
         <span class="material-symbols-outlined"> account_box </span>
         <br />
-        Login
+        Register
       </h1>
 
-      <form @submit.prevent="loginUserHandler">
+      <form @submit.prevent="registerUserHandler">
+        <input v-model="name" type="text" placeholder="Name" />
         <input v-model="email" type="email" placeholder="Email" />
         <input v-model="password" type="password" placeholder="Password" />
         <p v-if="error" class="error">{{ error }}</p>
         <button type="submit" :disabled="loading">
-          {{ loading ? 'Logging in...' : 'Log in' }}
+          {{ loading ? 'Registering...' : 'Register' }}
         </button>
-        <p class="register">
-          New employee? Click <RouterLink to="/register">here</RouterLink> to register.
-        </p>
       </form>
     </div>
   </div>
@@ -78,14 +84,14 @@ async function loginUserHandler() {
   font-size: 4rem;
 }
 
-.login-container {
+.register-container {
   display: flex;
   justify-content: center;
   min-height: 100vh;
   width: 100%;
 }
 
-.login {
+.register {
   width: 100%;
   max-width: 400px;
   height: 100%;
@@ -112,8 +118,7 @@ form input {
   flex: 1;
 }
 
-h1,
-.register {
+h1 {
   text-align: center;
 }
 
