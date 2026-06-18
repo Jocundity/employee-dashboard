@@ -31,3 +31,56 @@ export async function createTask(task) {
 
   return data
 }
+
+export async function deleteTask(taskId) {
+  const response = await fetch(`${TASKS_API_URL}/${taskId}`, {
+    method: 'DELETE',
+  })
+
+  if (!response.ok) {
+    const errorData = await response.json()
+    throw new Error(errorData.error || 'Failed to delete task')
+  }
+}
+
+export async function updateTask(taskId, completed) {
+  const response = await fetch(`${TASKS_API_URL}/${taskId}/completed`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ completed }),
+  })
+
+  if (!response.ok) {
+    const errorData = await response.json()
+    throw new Error(errorData.error || 'Failed to update task')
+  }
+
+  const data = await response.json()
+
+  return data
+}
+
+export async function editTask(task) {
+  const response = await fetch(`${TASKS_API_URL}/${task.id}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      title: task.title,
+      dueDate: task.due_date,
+      priority: task.priority,
+    }),
+  })
+
+  if (!response.ok) {
+    const errorData = await response.json()
+    throw new Error(errorData.error || 'Failed to update task')
+  }
+
+  const data = await response.json()
+
+  return data
+}

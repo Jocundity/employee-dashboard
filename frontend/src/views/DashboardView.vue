@@ -13,7 +13,7 @@ import ChatBotWidget from '../components/ChatBotWidget.vue'
     <DashboardHeader />
 
     <main>
-      <h2>Welcome Back</h2>
+      <h2>I hope you have a productive day at work. 😊</h2>
       <div class="widget-grid">
         <ClockWidget />
         <WeatherWidget />

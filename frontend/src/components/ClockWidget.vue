@@ -23,16 +23,21 @@ onMounted(() => {
 <template>
   <div class="widget">
     <h3>Clock</h3>
+    <h2>{{ currentTime }}</h2>
     <p>{{ currentDate }}</p>
-    <p>{{ currentTime }}</p>
   </div>
 </template>
 
 <style scoped>
 .widget {
-  border: 5px solid #fcd34d;
   padding: 1rem;
   border-radius: 8px;
   background: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h3 {
+  border-bottom: 5px dotted #fcd34d;
+  padding-bottom: 0.5rem;
 }
 </style>

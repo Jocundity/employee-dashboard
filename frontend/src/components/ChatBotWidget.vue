@@ -55,7 +55,7 @@ async function sendMessage() {
       </div>
 
       <p v-if="loading">Loading...</p>
-      <p v-else-if="error">{{ error }}</p>
+      <p v-else-if="error" class="error">{{ error }}</p>
     </div>
 
     <div class="chatbot-input">
@@ -73,10 +73,20 @@ async function sendMessage() {
 
 <style scoped>
 .widget {
-  border: 5px solid #fcd34d;
   padding: 1rem;
   border-radius: 8px;
   background: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h3 {
+  border-bottom: 5px dotted #fcd34d;
+  padding-bottom: 0.5rem;
+}
+
+.error {
+  color: #ef4444;
+  font-weight: bold;
 }
 
 .chatbot-messages {
@@ -97,7 +107,12 @@ async function sendMessage() {
 }
 
 .message.assistant {
-  border-left: 4px solid #666;
+  border-right: 4px solid #0284c7;
+}
+
+.message.assistant > strong {
+  display: block;
+  text-align: right;
 }
 
 textarea {

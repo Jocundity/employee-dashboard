@@ -55,7 +55,7 @@ function formatDate(dateString) {
 
 <template>
   <div class="widget">
-    <h4>News</h4>
+    <h3>News</h3>
     <input
       type="text"
       v-model="searchTerm"
@@ -66,7 +66,7 @@ function formatDate(dateString) {
 
     <!-- Display loading, error, or news data -->
     <p v-if="loading">Loading news widget...</p>
-    <p v-else-if="error">{{ error }}</p>
+    <p v-else-if="error" class="error">{{ error }}</p>
     <p v-if="articles.length === 0 && !loading && !error">No articles found.</p>
 
     <div v-if="articles.length > 0">
@@ -97,10 +97,20 @@ function formatDate(dateString) {
 
 <style scoped>
 .widget {
-  border: 5px solid #fcd34d;
   padding: 1rem;
   border-radius: 8px;
   background: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h3 {
+  border-bottom: 5px dotted #fcd34d;
+  padding-bottom: 0.5rem;
+}
+
+.error {
+  color: #ef4444;
+  font-weight: bold;
 }
 
 ul {

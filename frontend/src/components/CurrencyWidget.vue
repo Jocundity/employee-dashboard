@@ -85,7 +85,7 @@ async function convertCurrency() {
 
     <!-- Display loading, error, or currency data -->
     <p v-if="loading">Loading currency widget...</p>
-    <p v-if="error">{{ error }}</p>
+    <p v-if="error" class="error">{{ error }}</p>
 
     <div v-if="conversion">
       <h4>Conversion Result:</h4>
@@ -102,9 +102,19 @@ async function convertCurrency() {
 
 <style scoped>
 .widget {
-  border: 5px solid #fcd34d;
   padding: 1rem;
   border-radius: 8px;
   background: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h3 {
+  border-bottom: 5px dotted #fcd34d;
+  padding-bottom: 0.5rem;
+}
+
+.error {
+  color: #ef4444;
+  font-weight: bold;
 }
 </style>
