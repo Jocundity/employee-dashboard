@@ -56,13 +56,15 @@ function formatDate(dateString) {
 <template>
   <div class="widget">
     <h3>News</h3>
-    <input
-      type="text"
-      v-model="searchTerm"
-      placeholder="Search news..."
-      @keyup.enter="searchNews"
-    />
-    <button @click="searchNews">Search</button>
+    <div class="search-bar">
+      <input
+        type="text"
+        v-model="searchTerm"
+        placeholder="Search news..."
+        @keyup.enter="searchNews"
+      />
+      <button @click="searchNews">Search</button>
+    </div>
 
     <!-- Display loading, error, or news data -->
     <p v-if="loading">Loading news widget...</p>
@@ -86,9 +88,11 @@ function formatDate(dateString) {
           <p>{{ article.description }}</p>
         </li>
       </ul>
-      <p>Page {{ currentPage }} of {{ totalPages }}</p>
-      <button @click="currentPage--" :disabled="currentPage === 1">Back</button>
-      <button @click="currentPage++" :disabled="currentPage == totalPages">Next</button>
+      <p class="pages">Page {{ currentPage }} of {{ totalPages }}</p>
+      <div class="page-buttons">
+        <button @click="currentPage--" :disabled="currentPage === 1">Back</button>
+        <button @click="currentPage++" :disabled="currentPage == totalPages">Next</button>
+      </div>
     </div>
 
     <!-- End news data-->
@@ -111,6 +115,35 @@ h3 {
 .error {
   color: #ef4444;
   font-weight: bold;
+}
+
+.search-bar {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  background-color: #fcd34d;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #fbbf24;
 }
 
 ul {
@@ -152,5 +185,18 @@ img {
   height: 100px;
   object-fit: cover;
   border-radius: 4px;
+}
+
+.pages {
+  margin-top: 1rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.page-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
 }
 </style>

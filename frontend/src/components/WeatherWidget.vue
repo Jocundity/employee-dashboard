@@ -64,8 +64,10 @@ async function searchWeather(city) {
 <template>
   <div class="widget">
     <h3>Weather</h3>
-    <input v-model="cityInput" @keyup.enter="searchCities" placeholder="Enter a city" />
-    <button @click="searchCities">Search</button>
+    <div class="search-bar">
+      <input v-model="cityInput" @keyup.enter="searchCities" placeholder="Enter a city" />
+      <button @click="searchCities">Search</button>
+    </div>
 
     <!-- Display cities found if any -->
     <div v-if="citiesFound.length > 0">
@@ -73,7 +75,7 @@ async function searchWeather(city) {
       <ul>
         <li v-for="city in citiesFound" :key="city.id">
           {{ city.name }}, {{ city.country }}, {{ city.admin1 }}
-          <span v-if="city.admin2">, {{ city.admin2 }}</span>
+          <span v-if="city.admin2"> {{ city.admin2 }}</span>
           <button @click="searchWeather(city)">Select</button>
         </li>
       </ul>
@@ -87,10 +89,10 @@ async function searchWeather(city) {
     </p>
 
     <div v-else>
-      <p>{{ selectedCity }}</p>
-      <p>Temperature: {{ weather.current.temperature }}°C</p>
-      <p>Wind Speed: {{ weather.current.windSpeed }} km/h</p>
-      <p>Precipitation: {{ weather.current.precipitation }} mm</p>
+      <h2>{{ selectedCity }}</h2>
+      <h2>Temperature: {{ weather.current.temperature }}°C</h2>
+      <h2>Wind Speed: {{ weather.current.windSpeed }} km/h</h2>
+      <h2>Precipitation: {{ weather.current.precipitation }} mm</h2>
 
       <h4>7 Day Forecast</h4>
 
@@ -98,8 +100,8 @@ async function searchWeather(city) {
         <li v-for="day in weather.forecast" :key="day.date">
           {{ day.date }}
 
-          High/Low: {{ day.maxTemp }}° / {{ day.minTemp }}° Precipitation:
-          {{ day.precipitation }} mm
+          <span>High/Low: {{ day.maxTemp }}° / {{ day.minTemp }}°</span>
+          <span>Precipitation: {{ day.precipitation }} mm</span>
         </li>
       </ul>
     </div>
@@ -123,5 +125,54 @@ h3 {
 .error {
   color: #ef4444;
   font-weight: bold;
+}
+
+.search-bar {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  background-color: #fcd34d;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #fbbf24;
+}
+
+ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  list-style-type: none;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+}
+
+h2 {
+  text-align: center;
 }
 </style>

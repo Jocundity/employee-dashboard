@@ -65,8 +65,10 @@ async function sendMessage() {
         @keydown.enter.exact.prevent="sendMessage"
         :disabled="loading"
       ></textarea>
-      <button @click="sendMessage" :disabled="loading">Send</button>
-      <button @click="clearMessages">Clear History</button>
+      <div class="chatbot-buttons">
+        <button @click="sendMessage" :disabled="loading">Send</button>
+        <button @click="clearMessages">Clear History</button>
+      </div>
     </div>
   </div>
 </template>
@@ -119,5 +121,28 @@ textarea {
   width: 100%;
   min-height: 80px;
   margin-bottom: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #d1d5db;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  background-color: #fcd34d;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #fbbf24;
+}
+
+.chatbot-buttons {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
 }
 </style>

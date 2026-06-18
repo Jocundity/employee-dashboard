@@ -63,7 +63,7 @@ async function convertCurrency() {
   <div class="widget">
     <h3>Currency</h3>
 
-    <div>
+    <div class="converter">
       <label for="amount">Amount:</label>
       <input type="number" min="0" v-model.number="amount" />
 
@@ -89,11 +89,13 @@ async function convertCurrency() {
 
     <div v-if="conversion">
       <h4>Conversion Result:</h4>
-      <p>
-        {{ conversion.amount }} {{ conversion.fromCurrency }} = {{ conversion.result }}
-        {{ conversion.toCurrency }}
-      </p>
-      <p>Exchange Rate: {{ conversion.exchangeRate }}</p>
+      <div class="result">
+        <h2>
+          {{ conversion.amount }} {{ conversion.fromCurrency }} = {{ conversion.result }}
+          {{ conversion.toCurrency }}
+        </h2>
+        <h2>Exchange Rate: {{ conversion.exchangeRate }}</h2>
+      </div>
     </div>
 
     <!-- End currency data -->
@@ -116,5 +118,49 @@ h3 {
 .error {
   color: #ef4444;
   font-weight: bold;
+}
+
+.converter {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+input {
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+select {
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  background-color: #fcd34d;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #fbbf24;
+}
+
+.result {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
 }
 </style>

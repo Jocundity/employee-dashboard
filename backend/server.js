@@ -15,13 +15,14 @@ app.get('/api/tasks', async (req, res) => {
   try {
     const result = await pool.query(`
       SELECT
-        id,
-       title,
-       completed,
-       priority,
-       TO_CHAR(due_date, 'DD/MM/YYYY') AS due_date
+      id,
+      parent_task_id,
+      title,
+      completed,
+      priority,
+      TO_CHAR(due_date, 'DD/MM/YYYY') AS due_date
       FROM tasks
-      ORDER BY tasks.due_date ASC;
+      ORDER BY due_date ASC;
       `)
 
     res.json(result.rows)
@@ -35,7 +36,7 @@ app.get('/api/tasks', async (req, res) => {
 })
 
 app.post('/api/tasks', async (req, res) => {
-  const { title, dueDate: due_date, priority } = req.body
+  const { title, dueDate: due_date, priority, parent_task_id } = req.body
 
   // Validate the input data
   if (!title?.trim()) {
@@ -57,11 +58,16 @@ app.post('/api/tasks', async (req, res) => {
   try {
     const result = await pool.query(
       `
-      INSERT INTO tasks (title, due_date, priority)
-      VALUES ($1, $2, $3)
-      RETURNING id, title, completed, priority, TO_CHAR(due_date, 'DD/MM/YYYY') AS due_date;
+      INSERT INTO tasks (title, due_date, priority, parent_task_id)
+      VALUES ($1, $2, $3, $4)
+      RETURNING id, parent_task_id, title, completed, priority, TO_CHAR(due_date, 'DD/MM/YYYY') AS due_date;
       `,
-      [title, due_date === '' ? null : due_date, priority === '' ? null : priority],
+      [
+        title,
+        due_date === '' ? null : due_date,
+        priority === '' ? null : priority,
+        parent_task_id === '' ? null : parent_task_id,
+      ],
     )
 
     res.status(201).json(result.rows[0]) // Return the task
