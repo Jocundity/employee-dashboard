@@ -48,14 +48,18 @@ async function sendMessage() {
     <h3>AI Assistant</h3>
 
     <div class="chatbot-messages">
-      <div v-for="(message, index) in messages" :key="index" class="message" :class="message.role">
-        <strong>{{ message.role === 'assistant' ? 'AI Assistant' : 'You' }}</strong>
-        <p v-if="message.role === 'assistant'" v-html="message.text"></p>
-        <p v-else>{{ message.text }}</p>
-      </div>
+      <TransitionGroup name="chat-list" tag="div" class="chat-wrapper" appear>
+        <div v-for="message in messages" :key="message.text" class="message" :class="message.role">
+          <strong>{{ message.role === 'assistant' ? 'AI Assistant' : 'You' }}</strong>
+          <p v-if="message.role === 'assistant'" v-html="message.text"></p>
+          <p v-else>{{ message.text }}</p>
+        </div>
+      </TransitionGroup>
 
-      <p v-if="loading">Loading...</p>
-      <p v-else-if="error" class="error">{{ error }}</p>
+      <Transition name="fade" mode="out-in">
+        <p v-if="loading" key="loading">Loading...</p>
+        <p v-else-if="error" class="error" key="error">{{ error }}</p>
+      </Transition>
     </div>
 
     <div class="chatbot-input">
@@ -79,6 +83,8 @@ async function sendMessage() {
   border-radius: 8px;
   background: #fff;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
 }
 
 h3 {
@@ -102,6 +108,7 @@ h3 {
   padding: 0.75rem;
   border-radius: 8px;
   background-color: #fffbeb;
+  margin-bottom: 0.5rem;
 }
 
 .message.user {
@@ -144,5 +151,40 @@ button:hover {
   display: flex;
   gap: 0.5rem;
   justify-content: space-between;
+}
+
+/* Transitions */
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.25s ease-out;
+}
+
+.chat-list-enter-from {
+  opacity: 0;
+  transform: translateY(16px) scale(0.97);
+}
+
+.chat-list-leave-to {
+  opacity: 0;
+  transform: translateY(-16px) scale(0.97);
+}
+
+.chat-list-enter-active {
+  transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.chat-list-leave-active {
+  transition: all 0.3s ease-in;
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+.chat-list-move {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 </style>

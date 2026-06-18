@@ -87,40 +87,51 @@ function getWeatherIcon(code) {
     <!-- Display cities found if any -->
     <div v-if="citiesFound.length > 0">
       <h4>Choose your city:</h4>
-      <ul>
-        <li v-for="city in citiesFound" :key="city.id" class="cities">
+      <TransitionGroup name="list" tag="ul" appear>
+        <li
+          v-for="(city, index) in citiesFound"
+          :key="city.id"
+          class="cities"
+          :style="{ transitionDelay: `${index * 0.05}s` }"
+        >
           {{ city.name }}, {{ city.country }}, {{ city.admin1 }}
           <span v-if="city.admin2"> {{ city.admin2 }}</span>
           <button @click="searchWeather(city)">Select</button>
         </li>
-      </ul>
+      </TransitionGroup>
     </div>
 
     <!-- Display loading, error, or weather data -->
-    <p v-if="loading">Loading weather widget...</p>
+    <Transition name="fade" mode="out-in">
+      <p v-if="loading">Loading weather widget...</p>
 
-    <p v-else-if="error" class="error">
-      {{ error }}
-    </p>
+      <p v-else-if="error" class="error">
+        {{ error }}
+      </p>
 
-    <div v-else>
-      <h2>{{ selectedCity }}</h2>
-      <div class="current-icon">{{ getWeatherIcon(weather.current.weatherCode) }}</div>
-      <h2>Temperature: {{ weather.current.temperature }}°C</h2>
-      <h2>Wind Speed: {{ weather.current.windSpeed }} km/h</h2>
-      <h2>Precipitation: {{ weather.current.precipitation }} mm</h2>
+      <div v-else>
+        <h2>{{ selectedCity }}</h2>
+        <div class="current-icon">{{ getWeatherIcon(weather.current.weatherCode) }}</div>
+        <h2>Temperature: {{ weather.current.temperature }}°C</h2>
+        <h2>Wind Speed: {{ weather.current.windSpeed }} km/h</h2>
+        <h2>Precipitation: {{ weather.current.precipitation }} mm</h2>
 
-      <h4>7 Day Forecast</h4>
+        <h4>7 Day Forecast</h4>
 
-      <ul>
-        <li v-for="day in weather.forecast" :key="day.date">
-          <span class="forecast-icon">{{ getWeatherIcon(day.weatherCode) }}</span>
-          <span>{{ day.date }}</span>
-          <span>High/Low: {{ day.maxTemp }}° / {{ day.minTemp }}°</span>
-          <span>Precipitation: {{ day.precipitation }} mm</span>
-        </li>
-      </ul>
-    </div>
+        <TransitionGroup name="list" tag="ul" appear>
+          <li
+            v-for="(day, index) in weather.forecast"
+            :key="day.date"
+            :style="{ transitionDelay: `${index * 0.05}s` }"
+          >
+            <span class="forecast-icon">{{ getWeatherIcon(day.weatherCode) }}</span>
+            <span>{{ day.date }}</span>
+            <span>High/Low: {{ day.maxTemp }}° / {{ day.minTemp }}°</span>
+            <span>Precipitation: {{ day.precipitation }} mm</span>
+          </li>
+        </TransitionGroup>
+      </div>
+    </Transition>
     <!-- End weather data -->
   </div>
 </template>
@@ -131,6 +142,8 @@ function getWeatherIcon(code) {
   border-radius: 8px;
   background: #fff;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
 }
 
 h3 {
@@ -179,6 +192,7 @@ ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
+  position: relative;
 }
 
 li {
@@ -207,5 +221,45 @@ h2 {
 
 .forecast-icon {
   font-size: 1.5rem;
+}
+
+/* Transitions */
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(8px); /* Reduced from 20px for subtlety */
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  /* This cubic-bezier creates a smooth deceleration */
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 2. The Staggered List Items Transition */
+.list-enter-from {
+  opacity: 0;
+  transform: translateY(12px); /* Slightly less dramatic */
+}
+
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(-12px);
+}
+
+.list-enter-active {
+  /* Smooth out the entry curve */
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.list-leave-active {
+  transition: all 0.3s ease-in;
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+.list-move {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 </style>

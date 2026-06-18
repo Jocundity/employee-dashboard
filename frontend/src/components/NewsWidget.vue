@@ -67,33 +67,40 @@ function formatDate(dateString) {
     </div>
 
     <!-- Display loading, error, or news data -->
-    <p v-if="loading">Loading news widget...</p>
-    <p v-else-if="error" class="error">{{ error }}</p>
-    <p v-if="articles.length === 0 && !loading && !error">No articles found.</p>
+    <Transition name="fade" mode="out-in">
+      <p v-if="loading" key="loading">Loading news widget...</p>
+      <p v-else-if="error" class="error" key="error">{{ error }}</p>
+      <p v-else-if="articles.length === 0" key="empty">No articles found.</p>
 
-    <div v-if="articles.length > 0">
-      <ul>
-        <li v-for="article in displayedArticles" :key="article.url">
-          <div class="article-header">
-            <img v-if="article.image" :src="article.image" :alt="article.title" />
-            <div>
-              <a :href="article.url" target="_blank"> {{ article.title }}</a>
+      <div v-else key="content">
+        <TransitionGroup name="list" tag="ul" appear>
+          <li
+            v-for="(article, index) in displayedArticles"
+            :key="article.url"
+            :style="{ transitionDelay: `${index * 0.08}s` }"
+          >
+            <div class="article-header">
+              <img v-if="article.image" :src="article.image" :alt="article.title" />
+              <div>
+                <a :href="article.url" target="_blank"> {{ article.title }}</a>
 
-              <div class="article-byline">
-                <p>{{ article.source }}</p>
-                <p>{{ formatDate(article.publishedAt) }}</p>
+                <div class="article-byline">
+                  <p>{{ article.source }}</p>
+                  <p>{{ formatDate(article.publishedAt) }}</p>
+                </div>
               </div>
             </div>
-          </div>
-          <p>{{ article.description }}</p>
-        </li>
-      </ul>
-      <p class="pages">Page {{ currentPage }} of {{ totalPages }}</p>
-      <div class="page-buttons">
-        <button @click="currentPage--" :disabled="currentPage === 1">Back</button>
-        <button @click="currentPage++" :disabled="currentPage == totalPages">Next</button>
+            <p>{{ article.description }}</p>
+          </li>
+        </TransitionGroup>
+
+        <p class="pages">Page {{ currentPage }} of {{ totalPages }}</p>
+        <div class="page-buttons">
+          <button @click="currentPage--" :disabled="currentPage === 1">Back</button>
+          <button @click="currentPage++" :disabled="currentPage == totalPages">Next</button>
+        </div>
       </div>
-    </div>
+    </Transition>
 
     <!-- End news data-->
   </div>
@@ -105,6 +112,8 @@ function formatDate(dateString) {
   border-radius: 8px;
   background: #fff;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
 }
 
 h3 {
@@ -148,6 +157,7 @@ button:hover {
 
 ul {
   list-style-type: none;
+  position: relative;
 }
 
 li {
@@ -198,5 +208,40 @@ img {
   justify-content: center;
   gap: 1rem;
   margin-top: 0.5rem;
+}
+
+/* Transitions */
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.25s ease-out;
+}
+
+.list-enter-from {
+  opacity: 0;
+  transform: translateY(12px) scale(0.98);
+}
+
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(-12px) scale(0.98);
+}
+
+.list-enter-active {
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.list-leave-active {
+  transition: all 0.4s ease-in;
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+.list-move {
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 </style>

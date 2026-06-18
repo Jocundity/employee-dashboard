@@ -251,7 +251,6 @@ function getSubtasks(parentTaskId) {
   <div class="widget">
     <h3>Tasks</h3>
 
-    <!-- Form to add new task -->
     <form @submit.prevent="addTask">
       <label>Title: </label>
       <input type="text" placeholder="Add a new task" v-model="newTask.title" required />
@@ -267,14 +266,15 @@ function getSubtasks(parentTaskId) {
 
       <button type="submit">Add task</button>
     </form>
-    <!-- End form -->
-
-    <!-- Display loading, error, or tasks from database-->
     <p v-if="error" class="error">{{ error }}</p>
     <p v-else-if="loading">Loading tasks...</p>
 
-    <ul>
-      <li v-for="task in sortedTasks" :key="task.id">
+    <TransitionGroup name="list" tag="ul" appear>
+      <li
+        v-for="(task, index) in sortedTasks"
+        :key="task.id"
+        :style="{ transitionDelay: `${index * 0.04}s` }"
+      >
         <div v-if="editingTaskId !== task.id">
           <div v-if="isOverdue(task)" class="overdue">Overdue!</div>
           <div v-if="dueToday(task)" class="due-today">Due today!</div>
@@ -297,8 +297,19 @@ function getSubtasks(parentTaskId) {
             <button @click="removeTask(task.id)">Delete</button>
           </div>
 
-          <ul v-if="getSubtasks(task.id).length" class="subtask-list">
-            <li v-for="subtask in getSubtasks(task.id)" :key="subtask.id" class="subtask">
+          <TransitionGroup
+            v-if="getSubtasks(task.id).length"
+            name="list"
+            tag="ul"
+            class="subtask-list"
+            appear
+          >
+            <li
+              v-for="(subtask, subIndex) in getSubtasks(task.id)"
+              :key="subtask.id"
+              class="subtask"
+              :style="{ transitionDelay: `${subIndex * 0.04}s` }"
+            >
               <div v-if="editingTaskId !== subtask.id">
                 <div class="task-details">
                   <span class="checkbox-title">
@@ -346,7 +357,7 @@ function getSubtasks(parentTaskId) {
                 </div>
               </div>
             </li>
-          </ul>
+          </TransitionGroup>
         </div>
 
         <div v-else>
@@ -366,14 +377,17 @@ function getSubtasks(parentTaskId) {
           </div>
         </div>
       </li>
-    </ul>
-    <!-- End tasks data -->
-
+    </TransitionGroup>
     <p v-if="loadingSubtasks">Generating subtasks...</p>
     <div v-if="generatedSubtasks.length > 0">
       <h4>AI Suggested Subtasks:</h4>
-      <ul>
-        <li v-for="(subtask, index) in generatedSubtasks" :key="index">
+
+      <TransitionGroup name="list" tag="ul" appear>
+        <li
+          v-for="(subtask, aiIndex) in generatedSubtasks"
+          :key="subtask.title"
+          :style="{ transitionDelay: `${aiIndex * 0.04}s` }"
+        >
           <div class="task-details">
             <span><strong>Title: </strong>{{ subtask.title }}</span>
             <span><strong>Due Date: </strong>{{ subtask.due_date }}</span>
@@ -384,7 +398,8 @@ function getSubtasks(parentTaskId) {
             <button @click="addSubtaskToTasks(subtask)">Add to Task List</button>
           </div>
         </li>
-      </ul>
+      </TransitionGroup>
+
       <div class="add-all">
         <button @click="addAllSubtasks">Add All Subtasks to Task List</button>
       </div>
@@ -398,6 +413,8 @@ function getSubtasks(parentTaskId) {
   border-radius: 8px;
   background: #fff;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
 }
 
 h3 {
@@ -472,6 +489,7 @@ ul {
   list-style-type: none;
   padding: 0;
   margin: 0;
+  position: relative;
 }
 
 li {
@@ -542,5 +560,32 @@ li {
   background: #fffbeb;
   margin: 0.5rem 1rem 0 1rem;
   border: none;
+}
+
+/* Transitions */
+.list-enter-from {
+  opacity: 0;
+  transform: translateY(12px) scale(0.98);
+}
+
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(-12px) scale(0.98);
+}
+
+.list-enter-active {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.list-leave-active {
+  transition: all 0.3s ease-in;
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 0;
+}
+
+.list-move {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 </style>

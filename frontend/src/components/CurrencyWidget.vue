@@ -83,20 +83,22 @@ async function convertCurrency() {
       <button @click="convertCurrency">Convert</button>
     </div>
 
-    <!-- Display loading, error, or currency data -->
-    <p v-if="loading">Loading currency widget...</p>
-    <p v-if="error" class="error">{{ error }}</p>
+    <Transition name="fade" mode="out-in">
+      <!-- Display loading, error, or currency data -->
+      <p v-if="loading">Loading currency widget...</p>
+      <p v-else-if="error" class="error">{{ error }}</p>
 
-    <div v-if="conversion">
-      <h4>Conversion Result:</h4>
-      <div class="result">
-        <h2>
-          {{ conversion.amount }} {{ conversion.fromCurrency }} = {{ conversion.result }}
-          {{ conversion.toCurrency }}
-        </h2>
-        <h2>Exchange Rate: {{ conversion.exchangeRate }}</h2>
+      <div v-else-if="conversion">
+        <h4>Conversion Result:</h4>
+        <div class="result">
+          <h2>
+            {{ conversion.amount }} {{ conversion.fromCurrency }} = {{ conversion.result }}
+            {{ conversion.toCurrency }}
+          </h2>
+          <h2>Exchange Rate: {{ conversion.exchangeRate }}</h2>
+        </div>
       </div>
-    </div>
+    </Transition>
 
     <!-- End currency data -->
   </div>
@@ -108,6 +110,8 @@ async function convertCurrency() {
   border-radius: 8px;
   background: #fff;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
 }
 
 h3 {
@@ -162,5 +166,15 @@ button:hover {
   display: flex;
   justify-content: space-between;
   gap: 1rem;
+}
+
+/* Transtions */
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s;
 }
 </style>

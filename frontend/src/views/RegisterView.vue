@@ -38,22 +38,22 @@ async function registerUserHandler() {
     localStorage.setItem('token', authData.token)
     localStorage.setItem('user', JSON.stringify(authData.user))
 
+    loading.value = false
     router.push('/dashboard')
   } catch (err) {
     error.value = err.message
-  } finally {
     loading.value = false
   }
 }
 </script>
 
 <template>
-  <link
-    rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=account_box"
-  />
-
   <div class="register-container">
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=account_box"
+    />
+
     <div class="register">
       <h1>
         <span class="material-symbols-outlined"> account_box </span>
